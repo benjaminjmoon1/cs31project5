@@ -1,0 +1,74 @@
+Project 5 Report
+
+1. Notable Obstacles I Overcame
+
+One obstacle I had was in having the correct logic for calculating stars and planets, especially when I was handling the priority rule of a letter being counted as a star before being counted as a planet. I fixed this by using Boolean arrays to track which letters had been used, first counting stars and then planets.
+The second obstacle I had was with input. This included handling different types of input (words too long/short, non-lowercase letters, unknown words) while making sure the code was readable and that it had a clean structure. I fixed this by creating a validation system that used nested conditional blocks that made sure each level checked a specific aspect of the input.
+
+2. Description of Design
+
+The design of my program was built around two functions: main() and runOneRound(). The main function is responsible for managing the overall game flow, which includes word list initialization, round management, and statistics tracking. The pseudocode for the main routine is written below.
+
+Main routine:
+Initialize constants and word list array
+Get words from file using getWords()
+if no words loaded then
+    Display error and exit
+
+Get number of rounds from user
+if rounds <= 0 then
+    Display error and exit
+
+For each round:
+    1. Select random word using randInt()
+    2. Display word length
+    3. Call runOneRound() to play the round
+    4. Process round results:
+       - Handle singular/plural "try/tries" output
+       - Update min/max scores
+       - Calculate and display average (2 decimal places)
+
+The runOneRound function is responsible for handling the individual game rounds, which also handles the user input validation, word matching, and score calculation. This function utilizes a nested validation structure for input processing and also uses a two-phase algorithm in order to calculate stars and planets.
+
+
+runOneRound function:
+
+Parameter validation:
+    if nWords <= 0 or invalid wordnum then
+        return -1
+
+Initialize tries counter = 0
+
+Main game loop:
+    Get trial word input
+    
+    Validation Level 1 - Length Check:
+    if length is between 4 and 6 then
+        Validation Level 2 - Character Check:
+        Check all characters are lowercase
+        if all characters are valid then
+            Validation Level 3 - Word Existence:
+            Search for word in word list
+            if word exists then
+                Increment tries
+                if guess matches secret word then
+                    return tries
+                
+                Calculate stars and planets:
+                    Phase 1 - Stars:
+                        Mark matching letters at same positions
+                        Count matches as stars
+                    
+                    Phase 2 - Planets:
+                        For each unused letter in guess:
+                            Find matching unused letter in target
+                            Count as planet if found at different position
+                
+                Display stars and planets count
+            else
+                Display "I don't know that word"
+        else
+            Display "must be 4 to 6 lower case letters"
+    else
+        Display "must be 4 to 6 lower case letters"
+
